@@ -3,7 +3,7 @@ function addAY(inputWord) {
 };
 
 function isVowel(inputLetter) {
-    var vowelArray = ["a", "e", "i", "o", "u"];
+    var vowelArray = ["a", "e", "i", "o", "u", "A", "E", "I", "O", "U"];
     if (vowelArray.includes(inputLetter)) {
       return true;
     }
@@ -21,6 +21,11 @@ function startingLetters(inputWord) {
       if (!isVowel(wordArray[i])) {
         consonantString = consonantString + wordArray[i];
       } else {
+        if (wordArray[i-1] === "q" || wordArray[i-1] === "Q") {
+          if (wordArray[i] === "u" || wordArray[i] === "U") {
+            consonantString = consonantString + wordArray[i];
+          }
+        }
         return consonantString;
       }
     }
@@ -39,6 +44,38 @@ function moveConsonants(inputWord, consonantString) {
 };
 
 function separateWords(inputString) {
+  var sentenceArray = inputString.split(" ");
+  return sentenceArray;
   // splits it into words, storing each word in a single array
-  returns // the array
+  // returns the array
 };
+
+function sentenceAssembler(sentenceArray) {
+  var modifiedSentenceArray = sentenceArray.map(function(word) {
+    var consonantString = startingLetters(word);
+    if (consonantString !== "vowel") {
+      word = moveConsonants(word, consonantString);
+    }
+    word = addAY(word);
+    return word;
+  });
+  return modifiedSentenceArray;
+};
+
+$(document).ready(function() {
+  $("#sentence").submit(function(event) {
+    var inputWord = $("#sentenceInput").val();
+    var sentenceArray = separateWords(inputWord);
+    debugger;
+    // the below statement isn't currently working
+    var modifiedSentenceArray = sentenceAssember(sentenceArray);
+    debugger;
+    // var consonantString = startingLetters(inputWord);
+    // if (consonantString !== "vowel") {
+    //   inputWord = moveConsonants(inputWord, consonantString);
+    // }
+    // inputWord = addAY(inputWord);
+    // $("#result").text(inputWord);
+    event.preventDefault();
+  });
+});
