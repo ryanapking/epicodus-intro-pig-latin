@@ -64,17 +64,66 @@ function sentenceAssembler(sentenceArray) {
       word = moveConsonants(word, consonantString);
     }
     word = addAY(word);
+    word = fixPunctuation(word);
+    word = word.toLowerCase();
     return word;
   });
   return modifiedSentenceArray;
 };
+
+function fixPunctuation(word) {
+  var punctuationArray = [",", ".", "!", "?", ";", ":"];
+  var punctuationIndex = [];
+
+  punctuationArray.forEach(function(punctuation) {
+    var test = word.indexOf(punctuation);
+    punctuationIndex.push(test);
+  })
+  punctuationIndex.forEach(function(index) {
+    if (index !== -1 && index !== word.length) {
+      word = word.slice(0, index) + word.slice(index+1, word.length) + word.slice(index, index+1);
+    }
+  })
+  return word;
+}
+
+function fixCapitalization(outputString, index) {
+  var punctuationArray = [".", "?", "!"];
+  var punctuationIndex = [];
+  var newIndex = index;
+  debugger;
+  punctuationArray.forEach(function(punctuation) {
+    var test = outputString.indexOf(punctuation, index);
+    punctuationIndex.push(test);
+  });
+
+  if (punctuationIndex[0] !== -1 && punctuationIndex[1] !== -1 && punctuationIndex[2] !== -1) {
+    return outputString;
+  }
+
+  punctuationIndex.forEach(function(i) {
+    if (i !== -1) {
+      outputString = outputString.slice(0, i+2) + outputString.slice(i+2, i+3).toUpperCase() +  outputString.slice(i+3, outputString.length);
+    }
+    if (i !== -1 && i < newIndex) {
+      newIndex = i;
+    }
+  });
+  outputString = fixCapitalization(outputString, newIndex);
+}
 
 $(document).ready(function() {
   $("#sentence").submit(function(event) {
     var inputWord = $("#sentenceInput").val();
     var sentenceArray = separateWords(inputWord);
     var modifiedSentenceArray = sentenceAssembler(sentenceArray);
-    $("#result").text(modifiedSentenceArray.join(" "));
+    var displaySentence = modifiedSentenceArray.join(" ");
+    displaySentence = fixCapitalization(displaySentence, 0);
+    $("#result").append("<p>" + displaySentence + "</p>");
+    $("#sentenceInput").val("");
     event.preventDefault();
   });
+  $("#clear").click(function() {
+    $("#result").text("");
+  })
 });
