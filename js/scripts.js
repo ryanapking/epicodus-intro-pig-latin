@@ -1,5 +1,9 @@
 function addAY(inputWord) {
-  return (inputWord + "ay");
+  var wordArray = inputWord.split("");
+  if (isNaN(wordArray[0])) {
+    return (inputWord + "ay");
+  }
+  return inputWord;
 };
 
 function isVowel(inputLetter) {
@@ -13,6 +17,9 @@ function isVowel(inputLetter) {
 function startingLetters(inputWord) {
   var consonantString = "";
   var wordArray = inputWord.split("");
+  if (!isNaN(wordArray[0])) {
+    return consonantString;
+  }
   if (isVowel(wordArray[0])) {
     return "vowel";
   } else {
@@ -66,16 +73,8 @@ $(document).ready(function() {
   $("#sentence").submit(function(event) {
     var inputWord = $("#sentenceInput").val();
     var sentenceArray = separateWords(inputWord);
-    debugger;
-    // the below statement isn't currently working
-    var modifiedSentenceArray = sentenceAssember(sentenceArray);
-    debugger;
-    // var consonantString = startingLetters(inputWord);
-    // if (consonantString !== "vowel") {
-    //   inputWord = moveConsonants(inputWord, consonantString);
-    // }
-    // inputWord = addAY(inputWord);
-    // $("#result").text(inputWord);
+    var modifiedSentenceArray = sentenceAssembler(sentenceArray);
+    $("#result").text(modifiedSentenceArray.join(" "));
     event.preventDefault();
   });
 });
