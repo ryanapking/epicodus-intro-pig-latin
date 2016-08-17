@@ -90,26 +90,26 @@ function fixPunctuation(word) {
 function fixCapitalization(outputString, index) {
   var punctuationArray = [".", "?", "!"];
   var punctuationIndex = [];
-  var newIndex = index;
-  debugger;
+  var newIndex = outputString.length;
   punctuationArray.forEach(function(punctuation) {
     var test = outputString.indexOf(punctuation, index);
     punctuationIndex.push(test);
   });
-
-  if (punctuationIndex[0] !== -1 && punctuationIndex[1] !== -1 && punctuationIndex[2] !== -1) {
+  debugger;
+  if (punctuationIndex[0] === -1 && punctuationIndex[1] === -1 && punctuationIndex[2] === -1) {
+    outputString = outputString.slice(0, 1).toUpperCase() + outputString.slice(1, outputString.length);
     return outputString;
   }
-
   punctuationIndex.forEach(function(i) {
     if (i !== -1) {
       outputString = outputString.slice(0, i+2) + outputString.slice(i+2, i+3).toUpperCase() +  outputString.slice(i+3, outputString.length);
     }
     if (i !== -1 && i < newIndex) {
-      newIndex = i;
+      newIndex = i + 1;
     }
   });
   outputString = fixCapitalization(outputString, newIndex);
+  return outputString;
 }
 
 $(document).ready(function() {
