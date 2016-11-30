@@ -11,6 +11,7 @@ _Type in a sentence and it will be converted to Pig Latin. One-way conversion on
 ## Setup/Installation Requirements
 
 * _Open index.html in a web browser_
+* _Or open project on [GitHub pages](https://ryanapking.github.io/epicodus-intro-pig-latin/)_
 
 ## Specs
 
